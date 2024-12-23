@@ -19,21 +19,12 @@ fn parse_instructions(instructions: &str) -> i32 {
 
     for (index, c) in instructions.chars().enumerate() {
         if current_position == 0 && c == 'd' {
-            if char_at_matches(instructions, index + 1, 'o')
-                && char_at_matches(instructions, index + 2, '(')
-                && char_at_matches(instructions, index + 3, ')')
-            {
+            if chars_match(instructions, index, index + 3, "do()") {
                 enabled = true;
                 continue;
             }
 
-            if char_at_matches(instructions, index + 1, 'o')
-                && char_at_matches(instructions, index + 2, 'n')
-                && char_at_matches(instructions, index + 3, '\'')
-                && char_at_matches(instructions, index + 4, 't')
-                && char_at_matches(instructions, index + 5, '(')
-                && char_at_matches(instructions, index + 6, ')')
-            {
+            if chars_match(instructions, index, index + 6, "don't()") {
                 enabled = false;
                 continue;
             }
@@ -83,6 +74,10 @@ fn parse_instructions(instructions: &str) -> i32 {
     return result;
 }
 
-fn char_at_matches(s: &str, index: usize, match_char: char) -> bool {
-    s.chars().nth(index).is_some() && s.chars().nth(index) == Some(match_char)
+fn chars_match(s: &str, start: usize, end: usize, match_string: &str) -> bool {
+    s.chars()
+        .skip(start)
+        .take((end - start) + 1)
+        .collect::<String>()
+        == match_string
 }
