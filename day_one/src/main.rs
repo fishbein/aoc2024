@@ -12,6 +12,12 @@ fn main() {
     }
 
     println!("{total_distance}");
+
+    let mut total_similarity_scores: i32 = 0;
+    for list_value in list_one {
+        total_similarity_scores += get_similarity_score(list_value, &list_two)
+    }
+    println!("{total_similarity_scores}")
 }
 
 fn parse_and_sort_lists(list: &str) -> [Vec<i32>; 2] {
@@ -33,4 +39,9 @@ fn parse_and_sort_lists(list: &str) -> [Vec<i32>; 2] {
     list_two.sort();
 
     return [list_one, list_two];
+}
+
+fn get_similarity_score(value: i32, compare_list: &Vec<i32>) -> i32 {
+    let appearances: i32 = compare_list.iter().filter(|&val| *val == value).count() as i32;
+    return appearances * value;
 }
