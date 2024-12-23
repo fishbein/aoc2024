@@ -19,11 +19,29 @@ fn main() {
         "{}",
         line_vectors
             .iter()
-            .filter(
-                |line| (all_increasing(&line) || all_decreasing(&line)) && is_list_gradual(&line)
-            )
+            .filter(|line| is_damp_safe(&line))
             .count()
     );
+}
+
+fn is_safe(list: &Vec<i32>) -> bool {
+    (all_increasing(list) || all_decreasing(list)) && is_list_gradual(list)
+}
+
+fn is_damp_safe(list: &Vec<i32>) -> bool {
+    if is_safe(list) {
+        return true;
+    }
+
+    for index in 0..list.len() {
+        let mut list_copy = list.clone();
+        list_copy.remove(index);
+
+        if is_safe(&list_copy) {
+            return true;
+        }
+    }
+    return false;
 }
 
 fn all_increasing(list: &Vec<i32>) -> bool {
