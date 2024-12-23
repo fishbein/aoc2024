@@ -38,10 +38,10 @@ fn parse_and_sort_lists(list: &str) -> [Vec<i32>; 2] {
     list_one.sort();
     list_two.sort();
 
-    return [list_one, list_two];
+    [list_one, list_two]
 }
 
-fn get_similarity_score(value: i32, compare_list: &Vec<i32>) -> i32 {
+fn get_similarity_score(value: i32, compare_list: &[i32]) -> i32 {
     let appearances: i32 = compare_list.iter().filter(|&val| *val == value).count() as i32;
-    return appearances * value;
+    appearances * value
 }
