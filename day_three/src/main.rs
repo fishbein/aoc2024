@@ -8,6 +8,8 @@ fn main() {
 }
 
 fn parse_instructions(instructions: &str) -> i32 {
+    let mut enabled = true;
+
     let mut num_one = String::from("");
     let mut num_two = String::from("");
 
@@ -15,7 +17,32 @@ fn parse_instructions(instructions: &str) -> i32 {
 
     let mut result = 0;
 
-    for c in instructions.chars() {
+    for (index, c) in instructions.chars().enumerate() {
+        if current_position == 0 && c == 'd' {
+            if char_at_matches(instructions, index + 1, 'o')
+                && char_at_matches(instructions, index + 2, '(')
+                && char_at_matches(instructions, index + 3, ')')
+            {
+                enabled = true;
+                continue;
+            }
+
+            if char_at_matches(instructions, index + 1, 'o')
+                && char_at_matches(instructions, index + 2, 'n')
+                && char_at_matches(instructions, index + 3, '\'')
+                && char_at_matches(instructions, index + 4, 't')
+                && char_at_matches(instructions, index + 5, '(')
+                && char_at_matches(instructions, index + 6, ')')
+            {
+                enabled = false;
+                continue;
+            }
+        }
+
+        if !enabled {
+            continue;
+        }
+
         if current_position == 0 && c == 'm'
             || current_position == 1 && c == 'u'
             || current_position == 2 && c == 'l'
@@ -54,4 +81,8 @@ fn parse_instructions(instructions: &str) -> i32 {
     }
 
     return result;
+}
+
+fn char_at_matches(s: &str, index: usize, match_char: char) -> bool {
+    s.chars().nth(index).is_some() && s.chars().nth(index) == Some(match_char)
 }
