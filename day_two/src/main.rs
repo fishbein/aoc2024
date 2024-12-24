@@ -19,32 +19,33 @@ fn main() {
         "{}",
         line_vectors
             .iter()
-            .filter(|line| is_damp_safe(&line))
+            .filter(|line| is_damp_safe(line))
             .count()
     );
 }
 
-fn is_safe(list: &Vec<i32>) -> bool {
+fn is_safe(list: &[i32]) -> bool {
     (all_increasing(list) || all_decreasing(list)) && is_list_gradual(list)
 }
 
-fn is_damp_safe(list: &Vec<i32>) -> bool {
+fn is_damp_safe(list: &[i32]) -> bool {
     if is_safe(list) {
         return true;
     }
 
     for index in 0..list.len() {
-        let mut list_copy = list.clone();
+        let mut list_copy = list.to_owned().clone();
         list_copy.remove(index);
 
         if is_safe(&list_copy) {
             return true;
         }
     }
-    return false;
+
+    false
 }
 
-fn all_increasing(list: &Vec<i32>) -> bool {
+fn all_increasing(list: &[i32]) -> bool {
     for index in 1..list.len() {
         if list[index] > list[index - 1] {
             continue;
@@ -52,10 +53,11 @@ fn all_increasing(list: &Vec<i32>) -> bool {
             return false;
         }
     }
-    return true;
+
+    true
 }
 
-fn all_decreasing(list: &Vec<i32>) -> bool {
+fn all_decreasing(list: &[i32]) -> bool {
     for index in 1..list.len() {
         if list[index] < list[index - 1] {
             continue;
@@ -63,17 +65,19 @@ fn all_decreasing(list: &Vec<i32>) -> bool {
             return false;
         }
     }
-    return true;
+
+    true
 }
 
-fn is_list_gradual(list: &Vec<i32>) -> bool {
+fn is_list_gradual(list: &[i32]) -> bool {
     for index in 1..list.len() {
         let diff = (list[index] - list[index - 1]).abs();
-        if diff >= 1 && diff <= 3 {
+        if (1..=3).contains(&diff) {
             continue;
         } else {
             return false;
         }
     }
-    return true;
+
+    true
 }
