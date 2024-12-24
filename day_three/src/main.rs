@@ -44,7 +44,7 @@ fn parse_instructions(instructions: &str) -> i32 {
         }
 
         if current_position == 4 {
-            if c.is_digit(10) {
+            if c.is_ascii_digit() {
                 num_one.push(c);
                 continue;
             }
@@ -55,7 +55,7 @@ fn parse_instructions(instructions: &str) -> i32 {
         }
 
         if current_position == 5 {
-            if c.is_digit(10) {
+            if c.is_ascii_digit() {
                 num_two.push(c);
                 continue;
             }
@@ -71,7 +71,7 @@ fn parse_instructions(instructions: &str) -> i32 {
         current_position = 0;
     }
 
-    return result;
+    result
 }
 
 fn chars_match(s: &str, start: usize, end: usize, match_string: &str) -> bool {
