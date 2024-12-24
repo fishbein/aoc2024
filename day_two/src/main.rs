@@ -1,24 +1,17 @@
-use std::fs;
-
 fn main() {
-    let raw_input = fs::read_to_string("/Users/phil/Developer/aoc2024/day_two/src/input.txt")
-        .expect("Should have been able to read the file");
-
-    let lines = raw_input.lines();
-    let mut line_vectors: Vec<Vec<i32>> = Vec::new();
-    for line in lines {
-        let split_line: Vec<i32> = line
-            .split_whitespace()
-            .map(|val| val.parse().expect("Failed to get number"))
-            .collect();
-
-        line_vectors.push(split_line);
-    }
+    let line_vectors: Vec<Vec<i32>> = include_str!("./input.txt")
+        .lines()
+        .map(|line| {
+            line.split_whitespace()
+                .map(|ch| ch.parse().expect("Failed to parse number"))
+                .collect()
+        })
+        .collect();
 
     println!(
         "{}",
         line_vectors
-            .iter()
+            .into_iter()
             .filter(|line| is_damp_safe(line))
             .count()
     );
