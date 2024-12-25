@@ -3,8 +3,10 @@ fn main() {
 
     let input_lines: Vec<String> = input.map(String::from).collect();
 
-    // for character, if X, look left (backwards) right (forwards) up (backwards) down (forwards) diag up right, diag up left, diag down right, diag nown left
+    part_one(&input_lines);
+}
 
+fn part_one(input_lines: &[String]) {
     let mut xmas_count = 0;
 
     for (line_index, line) in input_lines.iter().enumerate() {
@@ -14,12 +16,12 @@ fn main() {
                 xmas_count += [
                     check_left(char_index, line),
                     check_right(char_index, line),
-                    check_up(line_index, char_index, &input_lines),
-                    check_down(line_index, char_index, &input_lines),
-                    check_up_left(line_index, char_index, &input_lines),
-                    check_up_right(line_index, char_index, &input_lines),
-                    check_down_left(line_index, char_index, &input_lines),
-                    check_down_right(line_index, char_index, &input_lines),
+                    check_up(line_index, char_index, input_lines),
+                    check_down(line_index, char_index, input_lines),
+                    check_up_left(line_index, char_index, input_lines),
+                    check_up_right(line_index, char_index, input_lines),
+                    check_down_left(line_index, char_index, input_lines),
+                    check_down_right(line_index, char_index, input_lines),
                 ]
                 .iter()
                 .filter(|val| **val)
