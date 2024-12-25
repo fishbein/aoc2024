@@ -4,6 +4,7 @@ fn main() {
     let input_lines: Vec<String> = input.map(String::from).collect();
 
     part_one(&input_lines);
+    part_two(&input_lines);
 }
 
 fn part_one(input_lines: &[String]) {
@@ -12,7 +13,6 @@ fn part_one(input_lines: &[String]) {
     for (line_index, line) in input_lines.iter().enumerate() {
         for (char_index, c) in line.chars().enumerate() {
             if c == 'X' {
-                println!("found x as position ({line_index}, {char_index})");
                 xmas_count += [
                     check_left(char_index, line),
                     check_right(char_index, line),
@@ -26,11 +26,53 @@ fn part_one(input_lines: &[String]) {
                 .iter()
                 .filter(|val| **val)
                 .count();
-                println!(" ");
             }
         }
     }
-    println!("{xmas_count}")
+    println!("XMAS Count: {xmas_count}")
+}
+
+fn part_two(input_lines: &[String]) {
+    let mut x_mas_count = 0;
+
+    for (line_index, line) in input_lines.iter().enumerate() {
+        for (char_index, c) in line.chars().enumerate() {
+            if c == 'A' {
+                let up_left_char = if line_index > 0 && char_index > 0 {
+                    char_at_index(input_lines, line_index - 1, char_index - 1)
+                } else {
+                    ' '
+                };
+                let up_right_char = if line_index > 0 && char_index < input_lines[line_index].len()
+                {
+                    char_at_index(input_lines, line_index - 1, char_index + 1)
+                } else {
+                    ' '
+                };
+                let down_right_char = if line_index < input_lines.len()
+                    && char_index < input_lines[line_index].len()
+                {
+                    char_at_index(input_lines, line_index + 1, char_index + 1)
+                } else {
+                    ' '
+                };
+                let down_left_char = if line_index < input_lines.len() && char_index > 0 {
+                    char_at_index(input_lines, line_index + 1, char_index - 1)
+                } else {
+                    ' '
+                };
+
+                if ((up_left_char == 'M' && down_right_char == 'S')
+                    || (up_left_char == 'S' && down_right_char == 'M'))
+                    && ((down_left_char == 'M' && up_right_char == 'S')
+                        || (down_left_char == 'S' && up_right_char == 'M'))
+                {
+                    x_mas_count += 1;
+                }
+            }
+        }
+    }
+    println!("X-MAS count: {x_mas_count}")
 }
 
 fn check_left(char_index: usize, line: &str) -> bool {
